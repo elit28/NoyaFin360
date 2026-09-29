@@ -1,0 +1,13 @@
+/**
+ * Global foundation only.
+ * Jellyfin-specific selectors must be verified before being added here.
+ */
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--nf-bg);
+  color: var(--nf-text);
+}
