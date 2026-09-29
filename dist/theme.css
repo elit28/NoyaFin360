@@ -1,4 +1,13 @@
 /**
+ * NoyaFin360
+ * Main source entry.
+ *
+ * Keep module ordering intentional. Later modules may refine earlier layers.
+ */
+
+
+/* >>> variables.css */
+/**
  * NoyaFin360 — Design tokens (the single source of truth).
  *
  * Naming: --nf-<group>-<role>[-<variant>].
@@ -175,3 +184,148 @@
 :root[data-theme="light"] {
   color-scheme: light;
 }
+
+/* <<< variables.css */
+
+
+/* >>> base.css */
+/**
+ * NoyaFin360 — Foundation layer.
+ *
+ * Global, low-risk foundation only. Jellyfin component selectors live in their
+ * dedicated modules and must be verified in docs/jellyfin-selectors.md first.
+ *
+ * Scoping strategy:
+ *   - Global tokens/reset here are safe under Modern AND Legacy.
+ *   - Modern-only structural rules (later modules) gate on
+ *     `:root:has(.MuiAppBar-root)` and/or the `.layout-*` classes on <html>.
+ *   - Never assume hover. TV/keyboard focus is first-class.
+ */
+
+/* Foundation background + text. Kept minimal; component color comes later. */
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--nf-bg);
+  color: var(--nf-text);
+}
+
+/* iOS/Android safe-area-aware page gutters, exposed for component modules.
+   Applied here as inline padding on the shared page container hooks that are
+   verified stable; individual components refine as needed. */
+.homePage,
+.libraryPage,
+.itemDetailPage {
+  padding-inline: var(--nf-gutter-inline-start) var(--nf-gutter-inline-end);
+}
+
+/* Focus is functionality, not decoration.
+   Keyboard focus everywhere; stronger ring on TV. Uses :focus-visible so a
+   pointer click does not paint a ring. */
+:focus-visible {
+  outline: var(--nf-focus-ring-width) solid var(--nf-focus-ring-color);
+  outline-offset: var(--nf-focus-ring-offset);
+}
+
+/* TV layout: focus must be unmistakable at a distance and never clipped.
+   .show-focus is Jellyfin's own focus hook (verified v12.0). */
+:root.layout-tv :focus-visible {
+  outline-width: calc(var(--nf-focus-ring-width) * 1.5);
+}
+
+/* Reduced-motion: honor the OS preference globally. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* <<< base.css */
+
+
+/* >>> typography.css */
+/* Typography module. Jellyfin selectors pending verification. */
+
+/* <<< typography.css */
+
+
+/* >>> navigation.css */
+/* Navigation module. Jellyfin selectors pending verification. */
+
+/* <<< navigation.css */
+
+
+/* >>> home.css */
+/* Home module. Jellyfin selectors pending verification. */
+
+/* <<< home.css */
+
+
+/* >>> cards.css */
+/* Cards module. Jellyfin selectors pending verification. */
+
+/* <<< cards.css */
+
+
+/* >>> details.css */
+/* Movie, series, season and episode details. Selectors pending verification. */
+
+/* <<< details.css */
+
+
+/* >>> dialogs.css */
+/* Dialogs, menus, dropdowns and forms. Selectors pending verification. */
+
+/* <<< dialogs.css */
+
+
+/* >>> player.css */
+/* Video and audio player UI. Selectors pending verification. */
+
+/* <<< player.css */
+
+
+/* >>> live-tv.css */
+/* Live TV and guide. Selectors pending verification. */
+
+/* <<< live-tv.css */
+
+
+/* >>> admin.css */
+/* Jellyfin administration interface. Selectors pending verification. */
+
+/* <<< admin.css */
+
+
+/* >>> responsive.css */
+/* Responsive rules should be added component-first, not as random patches. */
+
+@media (max-width: 48rem) {
+  :root {
+    --nf-page-gutter: 1rem;
+  }
+}
+
+/* <<< responsive.css */
+
+
+/* >>> accessibility.css */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* <<< accessibility.css */

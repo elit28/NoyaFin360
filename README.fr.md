@@ -38,7 +38,16 @@ Le projet s'inspire des standards d'ergonomie des grandes plateformes de streami
 
 ## État du projet
 
-Phase de fondation. Le thème n'est pas encore considéré comme prêt pour la production.
+Phase 1 (fondation) terminée : interface Jellyfin 12 Modern analysée, sélecteurs vérifiés sur `jellyfin-web@v12.0`, tokens et système de design définis, risques par plateforme documentés, pipeline de build validé. Le style des composants (Phase 2+) n'a pas commencé ; pas encore prêt pour la production.
+
+## Documentation
+
+- [Architecture](./docs/architecture.fr.md) · [EN](./docs/architecture.md)
+- [Système de design](./docs/design-system.fr.md) · [EN](./docs/design-system.md)
+- [Sélecteurs Jellyfin vérifiés](./docs/jellyfin-selectors.md)
+- [Risques par plateforme](./docs/platform-risks.fr.md) · [EN](./docs/platform-risks.md)
+- [Compatibilité](./docs/compatibility.fr.md) · [EN](./docs/compatibility.md)
+- [Plan Phase 2](./docs/phase2-plan.fr.md) · [EN](./docs/phase2-plan.md)
 
 ## Structure
 

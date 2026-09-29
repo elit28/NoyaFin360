@@ -39,7 +39,16 @@ It is inspired by the usability standards of modern streaming platforms without 
 
 ## Development status
 
-Early foundation phase. Do not consider the theme production-ready yet.
+Phase 1 (foundation) complete: Jellyfin 12 Modern UI analysed, selectors verified against `jellyfin-web@v12.0`, design tokens and design system defined, platform risks documented, build pipeline validated. Component styling (Phase 2+) has not started; not production-ready yet.
+
+## Documentation
+
+- [Architecture](./docs/architecture.md) · [FR](./docs/architecture.fr.md)
+- [Design system](./docs/design-system.md) · [FR](./docs/design-system.fr.md)
+- [Verified Jellyfin selectors](./docs/jellyfin-selectors.md)
+- [Platform risks](./docs/platform-risks.md) · [FR](./docs/platform-risks.fr.md)
+- [Compatibility](./docs/compatibility.md) · [FR](./docs/compatibility.fr.md)
+- [Phase 2 plan](./docs/phase2-plan.md) · [FR](./docs/phase2-plan.fr.md)
 
 ## Repository structure
 

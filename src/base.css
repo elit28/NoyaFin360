@@ -1,13 +1,57 @@
 /**
- * Global foundation only.
- * Jellyfin-specific selectors must be verified before being added here.
+ * NoyaFin360 — Foundation layer.
+ *
+ * Global, low-risk foundation only. Jellyfin component selectors live in their
+ * dedicated modules and must be verified in docs/jellyfin-selectors.md first.
+ *
+ * Scoping strategy:
+ *   - Global tokens/reset here are safe under Modern AND Legacy.
+ *   - Modern-only structural rules (later modules) gate on
+ *     `:root:has(.MuiAppBar-root)` and/or the `.layout-*` classes on <html>.
+ *   - Never assume hover. TV/keyboard focus is first-class.
  */
 
+/* Foundation background + text. Kept minimal; component color comes later. */
 html {
   color-scheme: dark;
 }
 
 body {
-  background: var(--nf-bg);
+  background-color: var(--nf-bg);
   color: var(--nf-text);
+}
+
+/* iOS/Android safe-area-aware page gutters, exposed for component modules.
+   Applied here as inline padding on the shared page container hooks that are
+   verified stable; individual components refine as needed. */
+.homePage,
+.libraryPage,
+.itemDetailPage {
+  padding-inline: var(--nf-gutter-inline-start) var(--nf-gutter-inline-end);
+}
+
+/* Focus is functionality, not decoration.
+   Keyboard focus everywhere; stronger ring on TV. Uses :focus-visible so a
+   pointer click does not paint a ring. */
+:focus-visible {
+  outline: var(--nf-focus-ring-width) solid var(--nf-focus-ring-color);
+  outline-offset: var(--nf-focus-ring-offset);
+}
+
+/* TV layout: focus must be unmistakable at a distance and never clipped.
+   .show-focus is Jellyfin's own focus hook (verified v12.0). */
+:root.layout-tv :focus-visible {
+  outline-width: calc(var(--nf-focus-ring-width) * 1.5);
+}
+
+/* Reduced-motion: honor the OS preference globally. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
