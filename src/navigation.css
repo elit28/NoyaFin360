@@ -1,1 +1,81 @@
-/* Navigation module. Jellyfin selectors pending verification. */
+/**
+ * NoyaFin360 — Navigation (Phase 2, desktop-first).
+ *
+ * Scope: the Jellyfin 12 Modern top app bar (MUI AppBar) and its horizontal
+ * user-view navigation. Verified against jellyfin-web@v12.0:
+ *   - OffsetAppBar renders <AppBar> transparent at top / 'default' on scroll.
+ *   - UserViewNav renders MUI text Buttons; the active view uses color='primary'.
+ *
+ * NOTE on the desktop sidebar: Jellyfin 12 Modern has NO left navigation drawer
+ * on desktop (AppDrawer mounts only when !isMediumScreen). A retractable icon
+ * sidebar is therefore not achievable in pure CSS and is deferred to a future
+ * optional JS add-on (see docs/roadmap.md). Here we elevate the real top nav.
+ *
+ * All selectors are language-independent (MUI classes / structure), never text.
+ */
+
+/* ---- App bar: discreet, content-first ---------------------------------- */
+/* Transparent while at the top so the backdrop/content shows through. */
+:root:has(.MuiAppBar-root) .MuiAppBar-root.MuiAppBar-colorTransparent {
+  background-color: transparent;
+  background-image: linear-gradient(
+    180deg,
+    rgba(5, 6, 10, 0.55) 0%,
+    rgba(5, 6, 10, 0) 100%
+  ); /* subtle top scrim keeps controls legible over bright art */
+  box-shadow: none;
+}
+
+/* On scroll MUI switches to color='default': become a translucent dark glass
+   surface instead of a heavy opaque bar. Solid fallback first, then blur. */
+:root:has(.MuiAppBar-root) .MuiAppBar-root.MuiAppBar-colorDefault {
+  background-color: var(--nf-glass-fallback);
+  background-image: none;
+  box-shadow: var(--nf-shadow-sm);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  :root:has(.MuiAppBar-root) .MuiAppBar-root.MuiAppBar-colorDefault {
+    background-color: var(--nf-surface-overlay);
+    backdrop-filter: blur(var(--nf-blur));
+  }
+}
+
+/* Toolbar rhythm. .padded-left/.padded-right are Jellyfin's own utilities. */
+:root:has(.MuiAppBar-root) .MuiAppBar-root .MuiToolbar-root {
+  gap: var(--nf-space-1);
+  min-height: var(--nf-header-height);
+}
+
+/* ---- Horizontal user-view navigation ----------------------------------- */
+/* Inactive items: quiet, high-legibility. */
+:root:has(.MuiAppBar-root) .MuiToolbar-root .MuiButton-text {
+  border-radius: var(--nf-radius-sm);
+  color: var(--nf-text-muted);
+  font-weight: var(--nf-weight-medium);
+}
+
+/* Hover is an ENHANCEMENT only (pointer devices); never required for function. */
+@media (hover: hover) and (pointer: fine) {
+  :root:has(.MuiAppBar-root) .MuiToolbar-root .MuiButton-text:hover {
+    color: var(--nf-text);
+    background-color: var(--nf-brand-primary-soft);
+  }
+}
+
+/* Active view (MUI color='primary') carries the brand identity. */
+:root:has(.MuiAppBar-root) .MuiToolbar-root .MuiButton-textPrimary {
+  color: var(--nf-brand-primary);
+  font-weight: var(--nf-weight-semibold);
+}
+
+/* Icons inside nav buttons inherit the button color for a clean monochrome nav. */
+:root:has(.MuiAppBar-root) .MuiToolbar-root .MuiButton-text .MuiButton-startIcon {
+  opacity: 0.9;
+}
+
+/* Focus: rely on the global :focus-visible ring (accessibility.css). Ensure the
+   button's own outline does not get clipped and reads on the glass surface. */
+:root:has(.MuiAppBar-root) .MuiToolbar-root .MuiButton-root:focus-visible {
+  background-color: var(--nf-brand-primary-soft);
+}

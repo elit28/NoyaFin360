@@ -1,1 +1,77 @@
-/* Home module. Jellyfin selectors pending verification. */
+/**
+ * NoyaFin360 — Home & content rails (Phase 2, desktop-first).
+ *
+ * Verified against jellyfin-web@v12.0 (home tab rendered by the legacy
+ * `hometab` controller, so the section/rail/backdrop DOM is the shared one):
+ *   - .backdropContainer / .backdropImage  full-page backdrop layer
+ *   - .verticalSection                      a titled row/section
+ *   - .sectionTitleContainer / .sectionTitle / .sectionTitleTextButton
+ *   - .emby-scroller                        horizontal rail viewport
+ *   - .itemsContainer                       the row of cards
+ *
+ * NOTE: Jellyfin's home has NO structured hero element (logo/metadata/buttons).
+ * We make the home cinematic via the native backdrop + gradient scrim; a real
+ * hero would need JS/a plugin and is deferred (see docs/roadmap.md).
+ * We never reorder or hide Jellyfin's sections — presentation only.
+ */
+
+/* ---- Cinematic backdrop ------------------------------------------------- */
+/* Let the native backdrop breathe, then dissolve it into the dark canvas so
+   the page feels immersive rather than "a banner pasted on top". */
+:root:has(.MuiAppBar-root) .backdropContainer {
+  z-index: var(--nf-z-backdrop);
+}
+
+/* Scrim layer that dims the backdrop and dissolves it into --nf-bg. Applied as
+   a pseudo-element on the container (not the image) so Jellyfin's own fade-in
+   animation on .backdropImage is never disturbed. The flat wash guarantees the
+   dim regardless of the image's animated opacity. */
+:root:has(.MuiAppBar-root) .backdropContainer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(5, 6, 10, 0.45) 0%, rgba(5, 6, 10, 0.2) 30%),
+    var(--nf-gradient-backdrop);
+}
+
+/* ---- Sections / rails --------------------------------------------------- */
+:root:has(.MuiAppBar-root) .verticalSection {
+  margin-block-end: var(--nf-space-10);
+}
+
+/* Section header: clear hierarchy, styled by node (never by its text). */
+:root:has(.MuiAppBar-root) .sectionTitleContainer {
+  margin-block-end: var(--nf-space-4);
+}
+
+:root:has(.MuiAppBar-root) .sectionTitle {
+  font-size: var(--nf-text-xl);
+  font-weight: var(--nf-weight-semibold);
+  letter-spacing: var(--nf-tracking-tight);
+  color: var(--nf-text);
+}
+
+/* When the title is an interactive button, keep it quiet until hover/focus. */
+:root:has(.MuiAppBar-root) .sectionTitleTextButton {
+  color: var(--nf-text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root:has(.MuiAppBar-root) .sectionTitleTextButton:hover {
+    color: var(--nf-brand-primary);
+  }
+}
+
+/* Rail rhythm: consistent gaps and comfortable vertical breathing room. */
+:root:has(.MuiAppBar-root) .itemsContainer {
+  gap: var(--nf-rail-gap);
+}
+
+/* Keep focused/scaled cards from being clipped at the rail edges (desktop TV
+   focus + hover both scale cards). Only relax vertical clipping. */
+:root:has(.MuiAppBar-root) .emby-scroller {
+  padding-block: var(--nf-space-2);
+}

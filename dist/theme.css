@@ -121,6 +121,185 @@ html {
 body {
   background-color: var(--nf-bg);
   color: var(--nf-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizelegibility;
+}
+
+:root:has(.MuiAppBar-root) .MuiAppBar-root.MuiAppBar-colorTransparent {
+  box-shadow: none;
+  background-color: #0000;
+  background-image: linear-gradient(#05060a8c 0%, #05060a00 100%);
+}
+
+:root:has(.MuiAppBar-root) .MuiAppBar-root.MuiAppBar-colorDefault {
+  background-color: var(--nf-glass-fallback);
+  box-shadow: var(--nf-shadow-sm);
+  background-image: none;
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  :root:has(.MuiAppBar-root) .MuiAppBar-root.MuiAppBar-colorDefault {
+    background-color: var(--nf-surface-overlay);
+    -webkit-backdrop-filter: blur(var(--nf-blur));
+    backdrop-filter: blur(var(--nf-blur));
+  }
+}
+
+:root:has(.MuiAppBar-root) .MuiAppBar-root .MuiToolbar-root {
+  gap: var(--nf-space-1);
+  min-height: var(--nf-header-height);
+}
+
+:root:has(.MuiAppBar-root) .MuiToolbar-root .MuiButton-text {
+  border-radius: var(--nf-radius-sm);
+  color: var(--nf-text-muted);
+  font-weight: var(--nf-weight-medium);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root:has(.MuiAppBar-root) .MuiToolbar-root .MuiButton-text:hover {
+    color: var(--nf-text);
+    background-color: var(--nf-brand-primary-soft);
+  }
+}
+
+:root:has(.MuiAppBar-root) .MuiToolbar-root .MuiButton-textPrimary {
+  color: var(--nf-brand-primary);
+  font-weight: var(--nf-weight-semibold);
+}
+
+:root:has(.MuiAppBar-root) .MuiToolbar-root .MuiButton-text .MuiButton-startIcon {
+  opacity: .9;
+}
+
+:root:has(.MuiAppBar-root) .MuiToolbar-root .MuiButton-root:focus-visible {
+  background-color: var(--nf-brand-primary-soft);
+}
+
+:root:has(.MuiAppBar-root) .backdropContainer {
+  z-index: var(--nf-z-backdrop);
+}
+
+:root:has(.MuiAppBar-root) .backdropContainer:after {
+  content: "";
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(180deg, #05060a73 0%, #05060a33 30%),
+    var(--nf-gradient-backdrop);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+:root:has(.MuiAppBar-root) .verticalSection {
+  margin-block-end: var(--nf-space-10);
+}
+
+:root:has(.MuiAppBar-root) .sectionTitleContainer {
+  margin-block-end: var(--nf-space-4);
+}
+
+:root:has(.MuiAppBar-root) .sectionTitle {
+  font-size: var(--nf-text-xl);
+  font-weight: var(--nf-weight-semibold);
+  letter-spacing: var(--nf-tracking-tight);
+  color: var(--nf-text);
+}
+
+:root:has(.MuiAppBar-root) .sectionTitleTextButton {
+  color: var(--nf-text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root:has(.MuiAppBar-root) .sectionTitleTextButton:hover {
+    color: var(--nf-brand-primary);
+  }
+}
+
+:root:has(.MuiAppBar-root) .itemsContainer {
+  gap: var(--nf-rail-gap);
+}
+
+:root:has(.MuiAppBar-root) .emby-scroller {
+  padding-block: var(--nf-space-2);
+}
+
+:root:has(.MuiAppBar-root) .card .cardImageContainer {
+  border-radius: var(--nf-radius-md);
+  overflow: hidden;
+}
+
+:root:has(.MuiAppBar-root) .card .cardScalable {
+  border-radius: var(--nf-radius-md);
+  box-shadow: var(--nf-shadow-card);
+  transition: transform var(--nf-duration-normal) var(--nf-ease-standard),
+    box-shadow var(--nf-duration-normal) var(--nf-ease-standard);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :root.layout-desktop .card:hover .cardScalable {
+    transform: scale(var(--nf-focus-scale));
+    box-shadow: var(--nf-shadow-raised);
+  }
+}
+
+:root:has(.MuiAppBar-root) .card:focus-within .cardScalable {
+  transform: scale(var(--nf-focus-scale));
+  box-shadow: var(--nf-shadow-raised);
+}
+
+:root:has(.MuiAppBar-root) .card.show-focus .cardScalable {
+  transform: scale(var(--nf-focus-scale));
+  box-shadow: var(--nf-shadow-raised);
+}
+
+:root.layout-tv .card:focus-within .cardScalable, :root.layout-tv .card.show-focus .cardScalable {
+  transform: scale(var(--nf-focus-scale-tv));
+}
+
+:root:has(.MuiAppBar-root) .cardOverlayContainer {
+  transition: opacity var(--nf-duration-fast) var(--nf-ease-standard);
+}
+
+:root:has(.MuiAppBar-root) .card:focus-within .cardOverlayContainer {
+  opacity: 1;
+}
+
+:root:has(.MuiAppBar-root) .cardOverlayFab-primary {
+  background: var(--nf-gradient-brand);
+  color: var(--nf-text-on-brand);
+}
+
+:root:has(.MuiAppBar-root) .itemProgressBar {
+  border-radius: var(--nf-radius-pill);
+  background-color: #ffffff38;
+  overflow: hidden;
+}
+
+:root:has(.MuiAppBar-root) .itemProgressBarForeground {
+  background-color: var(--nf-brand-primary);
+}
+
+:root:has(.MuiAppBar-root) .cardIndicators .playedIndicator {
+  background: var(--nf-gradient-brand);
+  color: var(--nf-text-on-brand);
+}
+
+:root:has(.MuiAppBar-root) .cardIndicators .countIndicator {
+  background-color: var(--nf-brand-primary-strong);
+  color: var(--nf-text-on-brand);
+}
+
+:root:has(.MuiAppBar-root) .card .cardText {
+  color: var(--nf-text);
+}
+
+:root:has(.MuiAppBar-root) .card .cardText-secondary {
+  color: var(--nf-text-muted);
+  font-size: var(--nf-text-sm);
 }
 
 @media (max-width: 48rem) {

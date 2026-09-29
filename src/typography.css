@@ -1,1 +1,13 @@
-/* Typography module. Jellyfin selectors pending verification. */
+/**
+ * NoyaFin360 — Typography.
+ *
+ * The theme stays font-INDEPENDENT: it never sets a font family, only global
+ * rendering polish. Component-level type scale uses the --nf-text-* tokens
+ * inside each module (verified selectors only), not blanket heading overrides.
+ */
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}

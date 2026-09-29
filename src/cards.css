@@ -1,1 +1,102 @@
-/* Cards module. Jellyfin selectors pending verification. */
+/**
+ * NoyaFin360 — Cards (Phase 2, desktop-first).
+ *
+ * Verified against jellyfin-web@v12.0 (src/components/cardbuilder/card.scss and
+ * cardBuilder.js). DOM: .card > .cardBox > .cardScalable > [ .cardPadder,
+ * .cardImageContainer (.cardImage/.coveredImage), .innerCardFooter
+ * (.itemProgressBar > .itemProgressBarForeground), .cardIndicators,
+ * .cardOverlayContainer (.cardOverlayButton*, .cardOverlayFab-primary) ] +
+ * outer .cardFooter.
+ *
+ * Philosophy: the artwork is the star. Light radius, minimal border, subtle
+ * shadow, short interaction. No arcade effects, no RGB halos, no blur.
+ * Actions appear on hover AND focus (keyboard/D-pad never depends on hover).
+ */
+
+/* ---- Frame & artwork ---------------------------------------------------- */
+:root:has(.MuiAppBar-root) .card .cardImageContainer {
+  border-radius: var(--nf-radius-md);
+  overflow: hidden;
+}
+
+/* The scalable inner wrapper carries elevation and the interaction transition.
+   Animate only transform + box-shadow (never `all`, never layout). */
+:root:has(.MuiAppBar-root) .card .cardScalable {
+  border-radius: var(--nf-radius-md);
+  box-shadow: var(--nf-shadow-card);
+  transition:
+    transform var(--nf-duration-normal) var(--nf-ease-standard),
+    box-shadow var(--nf-duration-normal) var(--nf-ease-standard);
+}
+
+/* ---- Desktop pointer interaction: gentle lift -------------------------- */
+@media (hover: hover) and (pointer: fine) {
+  :root.layout-desktop .card:hover .cardScalable {
+    transform: scale(var(--nf-focus-scale));
+    box-shadow: var(--nf-shadow-raised);
+  }
+}
+
+/* ---- Focus interaction (keyboard + D-pad + click): same lift ----------- */
+/* :focus-within covers the card gaining focus or any child (overlay button).
+   .show-focus is Jellyfin's own focus hook (verified). */
+:root:has(.MuiAppBar-root) .card:focus-within .cardScalable,
+:root:has(.MuiAppBar-root) .card.show-focus .cardScalable {
+  transform: scale(var(--nf-focus-scale));
+  box-shadow: var(--nf-shadow-raised);
+}
+
+/* Stronger, unmistakable lift on TV. */
+:root.layout-tv .card:focus-within .cardScalable,
+:root.layout-tv .card.show-focus .cardScalable {
+  transform: scale(var(--nf-focus-scale-tv));
+}
+
+/* ---- Native overlay actions -------------------------------------------- */
+/* Reveal on hover (pointer) AND focus-within so keyboard/D-pad users get them.
+   We never hide the actions permanently — only fade the resting state. */
+:root:has(.MuiAppBar-root) .cardOverlayContainer {
+  transition: opacity var(--nf-duration-fast) var(--nf-ease-standard);
+}
+
+:root:has(.MuiAppBar-root) .card:focus-within .cardOverlayContainer {
+  opacity: 1;
+}
+
+/* Primary action (play) carries the brand. */
+:root:has(.MuiAppBar-root) .cardOverlayFab-primary {
+  background: var(--nf-gradient-brand);
+  color: var(--nf-text-on-brand);
+}
+
+/* ---- Progress: visible but elegant ------------------------------------- */
+:root:has(.MuiAppBar-root) .itemProgressBar {
+  background-color: rgba(255, 255, 255, 0.22);
+  border-radius: var(--nf-radius-pill);
+  overflow: hidden;
+}
+
+:root:has(.MuiAppBar-root) .itemProgressBarForeground {
+  background-color: var(--nf-brand-primary);
+}
+
+/* ---- Indicators: quiet brand tint -------------------------------------- */
+:root:has(.MuiAppBar-root) .cardIndicators .playedIndicator {
+  background: var(--nf-gradient-brand);
+  color: var(--nf-text-on-brand);
+}
+
+:root:has(.MuiAppBar-root) .cardIndicators .countIndicator {
+  background-color: var(--nf-brand-primary-strong);
+  color: var(--nf-text-on-brand);
+}
+
+/* ---- Card text: restrained, legible ------------------------------------ */
+:root:has(.MuiAppBar-root) .card .cardText {
+  color: var(--nf-text);
+}
+
+:root:has(.MuiAppBar-root) .card .cardText-secondary {
+  color: var(--nf-text-muted);
+  font-size: var(--nf-text-sm);
+}

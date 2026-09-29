@@ -91,13 +91,25 @@ NoyaFin360 keeps its own `--nf-*` token layer and maps into these `--jf-*` varia
 | `.headerLeft` | v12.0 | Left header cluster | |
 | `.MuiAppBar-root` | v12.0 (MUI) | Modern header (fixed) | Stable MUI **root** class. Also present: `.MuiAppBar-colorTransparent` (top), `.MuiAppBar-colorDefault` (scrolled), `.MuiPaper-elevation0/1`. |
 | `.MuiToolbar-root` | v12.0 (MUI) | Toolbar inside the AppBar | `.MuiToolbar-dense` used (dense variant). Modern toolbar also carries `.padded-left.padded-right`. |
+| `.MuiAppBar-colorTransparent` | v12.0 (MUI) | Header at top of page (transparent) | `OffsetAppBar` sets `color='transparent'` until scrolled. |
+| `.MuiAppBar-colorDefault` | v12.0 (MUI) | Header after scroll | `color='default'` once `useScrollTrigger` fires; elevation `.MuiPaper-elevation1`. |
 | `.padded-left` / `.padded-right` / `.padded-top` / `.padded-bottom` | v12.0 | Shared padding utilities | |
+| `.MuiButton-root` / `.MuiButton-text` | v12.0 (MUI) | Nav buttons in `UserViewNav` | Stable MUI root classes. |
+| `.MuiButton-textPrimary` | v12.0 (MUI) | **Active** nav view | `UserViewNav` sets `color='primary'` on the current view — language-independent active hook. |
+| `.MuiButton-textInherit` | v12.0 (MUI) | Inactive nav view | `color='inherit'`. |
+| `.MuiButton-startIcon` | v12.0 (MUI) | Leading icon in a button | |
 
 ### Drawer / navigation
 
+> **Desktop has no navigation drawer.** In Modern, `AppDrawer` mounts only when
+> `!isMediumScreen` (`src/apps/modern/AppLayout.tsx`), so on desktop (md+) there
+> is no left drawer — navigation is the horizontal top toolbar (`UserViewNav`).
+> A retractable desktop sidebar cannot be built in pure CSS; it is deferred to a
+> future optional JS add-on (see `roadmap.md`).
+
 | Selector | Verified | Purpose | Notes |
 |---|---|---|---|
-| `.MuiDrawer-root` / `.MuiDrawer-paper` | v12.0 (MUI) | Modern navigation drawer | From `AppDrawer.tsx`. |
+| `.MuiDrawer-root` / `.MuiDrawer-paper` | v12.0 (MUI) | Modern navigation drawer (**mobile/tablet only**) | From `AppDrawer.tsx` via `ResponsiveDrawer`. |
 | `.mainDrawer` | v12.0 | Legacy/shared drawer | Present in shared shell. |
 | `.emby-tabs` / `.emby-tab` | v12.0 | Tab strips (custom elements) | `src/elements`. |
 
@@ -109,6 +121,7 @@ NoyaFin360 keeps its own `--nf-*` token layer and maps into these `--jf-*` varia
 | `.verticalSection` | v12.0 | A titled row/section | |
 | `.sectionTitleContainer` | v12.0 | Section header row | |
 | `.sectionTitle` | v12.0 | Section heading text node | Style by node, never by its text. |
+| `.sectionTitleTextButton` | v12.0 | Clickable section title | Some sections render the title as a button; style by class, never by text. |
 | `.emby-scroller` | v12.0 | Horizontal scroller wrapper | `src/elements`. |
 | `.emby-scrollbuttons` | v12.0 | Scroller prev/next buttons | Relevant for pointer; hidden on touch. |
 | `.itemsContainer` | v12.0 | Grid/row of cards | Shared across home, libraries, details. |
@@ -129,7 +142,12 @@ NoyaFin360 keeps its own `--nf-*` token layer and maps into these `--jf-*` varia
 | `.cardOverlayFab-primary` | v12.0 | Primary overlay action | |
 | `.cardText` (+ `-first`, `-secondary`, `-rightmargin`) | v12.0 | Card text lines | |
 | `.cardFooter` (+ `-withlogo`) / `.innerCardFooter` / `.fullInnerCardFooter` | v12.0 | Card footers | |
-| `.cardIndicators` | v12.0 | Badges (unplayed count, etc.) | |
+| `.cardIndicators` | v12.0 | Badges container | Wraps the indicators below (`cardBuilder.js`). |
+| `.playedIndicator` | v12.0 | Watched/played badge | Inside `.cardIndicators`. |
+| `.countIndicator` / `.childCountIndicator` | v12.0 | Unplayed / child count badge | Inside `.cardIndicators`. |
+| `.innerCardFooter` / `.fullInnerCardFooter` / `.innerCardFooterClear` | v12.0 | Footer overlaid on the image | Holds the progress bar when present. |
+| `.itemProgressBar` | v12.0 | Resume-progress track | From `indicators.getProgressBarHtml`. |
+| `.itemProgressBarForeground` | v12.0 | Resume-progress fill | Brand-tinted by NoyaFin360. |
 | `.card.show-focus` | v12.0 | TV/keyboard focus scaling hook | `.card.show-focus:not(.show-animation) .cardBox` and `.card:focus` set the focus transform in base CSS. |
 | `.card.show-animation:focus > .cardBox` | v12.0 | Focus scale (animated) | Base uses `transform: scale(1.07)`. |
 | `.card-hoverable:focus-within`, `.card-hoverable:hover` | v12.0 | Hoverable card states | |
