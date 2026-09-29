@@ -1,77 +1,72 @@
 /**
- * NoyaFin360 build.
+ * NoyaFin360 build — powered by lightningcss.
  *
- * Flattens src/theme.css by inlining local @import url("./...") statements
- * (depth-first, each file included once) and writes:
- *   - dist/theme.css      readable bundle
- *   - dist/theme.min.css  minified bundle (the one-line install target)
+ * Why lightningcss (see docs/build.md for the full decision):
+ *   - Real CSS parser: bundles @import, minifies, and VALIDATES syntax
+ *     (build fails on malformed CSS instead of silently shipping it).
+ *   - Browser-target lowering + vendor prefixing for the wide range of TV /
+ *     mobile / embedded engines NoyaFin360 must support.
+ *   - Replaces the previous hand-rolled regex minifier, which was fragile
+ *     (it could fuse selectors around `:` and misparse strings/url()).
  *
- * Zero dependencies. Remote @import (http/https) are left untouched.
- * The minifier is conservative and assumes the source contains no
- * comment-like sequences inside string/url() literals (true for this repo).
+ * Outputs:
+ *   - dist/theme.css      readable, bundled + prefixed
+ *   - dist/theme.min.css  minified (the one-line install target)
  */
 
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { writeFile, mkdir } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { bundle } from 'lightningcss';
 
 const ROOT = resolve(fileURLToPath(import.meta.url), '../..');
 const ENTRY = resolve(ROOT, 'src/theme.css');
 const DIST = resolve(ROOT, 'dist');
 
-const LOCAL_IMPORT = /@import\s+url\(\s*["']\.\/([^"')]+)["']\s*\)\s*;?/g;
+/** Encode a browser major version for lightningcss targets (major << 16). */
+const v = (major) => major << 16;
 
-/** Recursively inline local @import statements starting at `file`. */
-async function flatten(file, seen = new Set()) {
-  const abs = resolve(file);
-  if (seen.has(abs)) return '';
-  seen.add(abs);
+/**
+ * Conservative targets covering desktop browsers, iOS/Android web views, and
+ * older Smart-TV / embedded engines. Kept broad on purpose so lightningcss
+ * lowers/prefixes modern syntax rather than assuming evergreen engines.
+ */
+const targets = {
+  chrome: v(87),
+  edge: v(87),
+  firefox: v(78),
+  safari: (14 << 16) | (0 << 8),
+  ios_saf: (14 << 16) | (0 << 8)
+};
 
-  const css = await readFile(abs, 'utf8');
-  const baseDir = dirname(abs);
-  let out = '';
-  let last = 0;
-
-  for (const m of css.matchAll(LOCAL_IMPORT)) {
-    out += css.slice(last, m.index);
-    const importedPath = resolve(baseDir, m[1]);
-    out += `\n/* >>> ${m[1]} */\n`;
-    out += await flatten(importedPath, seen);
-    out += `\n/* <<< ${m[1]} */\n`;
-    last = m.index + m[0].length;
+function build(minify) {
+  const { code, warnings } = bundle({
+    filename: ENTRY,
+    minify,
+    targets,
+    errorRecovery: false // fail loudly on invalid CSS
+  });
+  if (warnings.length) {
+    for (const w of warnings) console.warn('  warning:', w.message ?? w);
   }
-  out += css.slice(last);
-  return out;
-}
-
-/** Conservative CSS minifier. */
-function minify(css) {
-  return css
-    .replace(/\/\*[\s\S]*?\*\//g, '')        // strip comments
-    .replace(/\s+/g, ' ')                      // collapse whitespace
-    // Trim around structural tokens only. NOTE: ':' is deliberately excluded —
-    // trimming it would fuse a descendant combinator before a pseudo-class
-    // (".layout-tv :focus-visible" -> ".layout-tv:focus-visible"), changing meaning.
-    .replace(/\s*([{};,])\s*/g, '$1')
-    .replace(/;}/g, '}')                        // drop last semicolon in block
-    .trim();
+  return code;
 }
 
 async function main() {
-  const bundle = (await flatten(ENTRY)).trim() + '\n';
-  const min = minify(bundle) + '\n';
+  const readable = build(false);
+  const min = build(true);
 
   await mkdir(DIST, { recursive: true });
-  await writeFile(resolve(DIST, 'theme.css'), bundle, 'utf8');
-  await writeFile(resolve(DIST, 'theme.min.css'), min, 'utf8');
+  await writeFile(resolve(DIST, 'theme.css'), readable);
+  await writeFile(resolve(DIST, 'theme.min.css'), min);
 
-  const kb = (s) => (Buffer.byteLength(s, 'utf8') / 1024).toFixed(2);
-  console.log(`NoyaFin360 build OK`);
-  console.log(`  dist/theme.css     ${kb(bundle)} KB`);
+  const kb = (buf) => (buf.length / 1024).toFixed(2);
+  console.log('NoyaFin360 build OK (lightningcss)');
+  console.log(`  dist/theme.css     ${kb(readable)} KB`);
   console.log(`  dist/theme.min.css ${kb(min)} KB`);
 }
 
 main().catch((err) => {
-  console.error('NoyaFin360 build failed:', err);
+  console.error('NoyaFin360 build failed:', err.message ?? err);
   process.exitCode = 1;
 });

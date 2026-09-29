@@ -47,6 +47,8 @@ Phase 1 (fondation) terminée : interface Jellyfin 12 Modern analysée, sélecte
 - [Sélecteurs Jellyfin vérifiés](./docs/jellyfin-selectors.md)
 - [Risques par plateforme](./docs/platform-risks.fr.md) · [EN](./docs/platform-risks.md)
 - [Compatibilité](./docs/compatibility.fr.md) · [EN](./docs/compatibility.md)
+- [Roadmap & carte de couverture](./docs/roadmap.fr.md) · [EN](./docs/roadmap.md)
+- [Pipeline de build & décision](./docs/build.md)
 - [Plan Phase 2](./docs/phase2-plan.fr.md) · [EN](./docs/phase2-plan.md)
 
 ## Structure

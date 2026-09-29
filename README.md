@@ -48,6 +48,8 @@ Phase 1 (foundation) complete: Jellyfin 12 Modern UI analysed, selectors verifie
 - [Verified Jellyfin selectors](./docs/jellyfin-selectors.md)
 - [Platform risks](./docs/platform-risks.md) · [FR](./docs/platform-risks.fr.md)
 - [Compatibility](./docs/compatibility.md) · [FR](./docs/compatibility.fr.md)
+- [Roadmap & coverage map](./docs/roadmap.md) · [FR](./docs/roadmap.fr.md)
+- [Build pipeline & decision](./docs/build.md)
 - [Phase 2 plan](./docs/phase2-plan.md) · [FR](./docs/phase2-plan.fr.md)
 
 ## Repository structure

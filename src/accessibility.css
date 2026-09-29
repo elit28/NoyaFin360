@@ -1,10 +1,37 @@
+/**
+ * NoyaFin360 — Accessibility safeguards.
+ *
+ * Single source of truth for cross-cutting accessibility rules:
+ *   - prefers-reduced-motion
+ *   - global keyboard / D-pad focus visibility
+ *   - (future) contrast / a11y helpers
+ *
+ * Component modules add component-specific focus styling (e.g. card scale),
+ * but the global focus baseline and motion policy stay here to avoid duplication.
+ */
+
+/* Focus is functionality, not decoration.
+   Keyboard focus everywhere; stronger ring on TV. `:focus-visible` avoids
+   painting a ring on plain pointer clicks. */
+:focus-visible {
+  outline: var(--nf-focus-ring-width) solid var(--nf-focus-ring-color);
+  outline-offset: var(--nf-focus-ring-offset);
+}
+
+/* TV layout: focus must be unmistakable at a distance.
+   `.layout-tv` is set by Jellyfin on <html> (verified v12.0). */
+:root.layout-tv :focus-visible {
+  outline-width: calc(var(--nf-focus-ring-width) * 1.5);
+}
+
+/* Honor the OS reduced-motion preference globally. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

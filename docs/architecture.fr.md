@@ -9,7 +9,7 @@ Conserver NoyaFin360 modulaire, auditable et résistant aux mises à jour Jellyf
 ## Couches sources (ordre = `src/theme.css`)
 
 1. Tokens de design — `src/variables.css` (seul endroit où les valeurs sont définies)
-2. Fondation globale — `src/base.css` (reset léger, base de scoping, focus, safe areas, reduced motion)
+2. Fondation globale — `src/base.css` (reset léger, base de scoping, fond/texte)
 3. Typographie
 4. Navigation (app bar, tiroir, onglets)
 5. Accueil (sections, rails, backdrop)
@@ -20,9 +20,18 @@ Conserver NoyaFin360 modulaire, auditable et résistant aux mises à jour Jellyf
 10. Live TV
 11. Administration
 12. Ajustements responsive (par composant, pas des rustines)
-13. Accessibilité
+13. Accessibilité — **source unique** pour `prefers-reduced-motion` et la visibilité globale du focus clavier/D-pad (non dupliquée dans `base.css`)
 
 Une couche tardive peut affiner une couche antérieure, jamais contredire les tokens.
+
+## Périmètre & dialectes
+
+Le périmètre final obligatoire de NoyaFin360 couvre toutes les parties de Jellyfin
+accessibles au Custom CSS (média, réglages utilisateur, administration). Deux
+dialectes partagent un même jeu de tokens : **média** (immersif/cinématique) et
+**admin** (sobre, niveau SaaS — sans flou/backdrop cinéma). Ne jamais masquer de
+fonctionnalité. Voir `roadmap.fr.md` pour la carte de couverture et
+`design-system.fr.md` pour les dialectes.
 
 ## Stratégie de scoping (vérifiée pour Jellyfin 12)
 
@@ -57,12 +66,14 @@ mapping vit dans les modules composants, gardant `variables.css` agnostique.
 
 ## Sorties générées
 
-`npm run build` aplati `src/theme.css` (résout les `@import`) et écrit :
+`npm run build` utilise **lightningcss** pour bundler `src/theme.css` (résout les
+`@import`), valider la syntaxe, préfixer/abaisser pour les moteurs cibles, et écrire :
 
-- `dist/theme.css` — bundle lisible
+- `dist/theme.css` — bundle lisible, préfixé
 - `dist/theme.min.css` — minifié, cible de l'installation en une ligne
 
-Ne pas éditer `dist/` à la main. Régénérer via le build.
+Un CSS invalide fait échouer le build. Ne pas éditer `dist/` à la main. Décision
+et compromis : `build.md`.
 
 ## Règle
 

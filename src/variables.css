@@ -4,7 +4,11 @@
  * Naming: --nf-<group>-<role>[-<variant>].
  * Only tokens live here. No component rules, no Jellyfin selectors.
  *
- * Dark is the foundation. A light scheme is provided as an override block.
+ * NoyaFin360 is DARK-FIRST and DARK-ONLY for the main theme. The theme never
+ * switches identity based on the OS light mode. The token architecture below
+ * keeps a light variant *possible* as a future opt-in add-on
+ * (`:root[data-theme="light"]`), but nothing here activates it automatically.
+ *
  * Tokens map into Jellyfin 12's --jf-* variables in the component layers,
  * not here (keep this file free of Jellyfin coupling).
  */
@@ -150,28 +154,26 @@
   --nf-z-toast: 500;
 }
 
-/* Light scheme override. Applied only where NoyaFin360 opts a surface in;
-   the theme foundation stays dark/cinematic by design. */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --nf-bg: #f4f5f8;
-    --nf-surface: #ffffff;
-    --nf-surface-elevated: #ffffff;
-    --nf-surface-overlay: rgba(255, 255, 255, 0.72);
-    --nf-surface-scrim: rgba(20, 22, 28, 0.4);
-    --nf-border: rgba(10, 12, 20, 0.12);
-    --nf-border-strong: rgba(10, 12, 20, 0.22);
-    --nf-text: #14161c;
-    --nf-text-muted: rgba(20, 22, 28, 0.66);
-    --nf-text-faint: rgba(20, 22, 28, 0.42);
-    --nf-glass-fallback: #ffffff;
-  }
-}
-
-/* Explicit opt-in overrides (in case a client exposes a theme toggle). */
-:root[data-theme="dark"] {
-  color-scheme: dark;
-}
+/*
+ * FUTURE LIGHT VARIANT — opt-in only, NOT part of the main theme.
+ *
+ * There is deliberately NO `@media (prefers-color-scheme: light)` block:
+ * NoyaFin360 must keep its cinematic dark identity on every device regardless
+ * of the OS light mode. These tokens activate only if a future add-on / client
+ * toggle sets `data-theme="light"` on <html>. Left here so the token
+ * architecture is ready without changing the main theme's behaviour.
+ */
 :root[data-theme="light"] {
   color-scheme: light;
+  --nf-bg: #f4f5f8;
+  --nf-surface: #ffffff;
+  --nf-surface-elevated: #ffffff;
+  --nf-surface-overlay: rgba(255, 255, 255, 0.72);
+  --nf-surface-scrim: rgba(20, 22, 28, 0.4);
+  --nf-border: rgba(10, 12, 20, 0.12);
+  --nf-border-strong: rgba(10, 12, 20, 0.22);
+  --nf-text: #14161c;
+  --nf-text-muted: rgba(20, 22, 28, 0.66);
+  --nf-text-faint: rgba(20, 22, 28, 0.42);
+  --nf-glass-fallback: #ffffff;
 }

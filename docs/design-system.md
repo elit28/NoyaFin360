@@ -17,9 +17,18 @@ A **cinematic, artwork-first** interface: a cool near-black canvas, immersive gr
 5. **One system, every screen.** The same tokens flex from phone to 10-foot TV via fluid scales and layout classes.
 6. **Language- and engine-independent.** No text-based selectors; graceful degradation on weak engines.
 
+## Two dialects, one system
+
+NoyaFin360 speaks two related dialects that share **one** token set (colors, radii, typography, buttons, inputs, focus, spacing, surfaces, feedback):
+
+- **Media** — immersive, cinematic, artwork-first: backdrops, restrained glass, gradient scrims, focus-driven motion.
+- **Admin / settings** — sober, structured, premium SaaS-grade: solid surfaces, tight tables/forms, minimal motion, **no** cinematic blur/backdrops.
+
+Same tokens, different intensity and layout register. Admin never inherits the media effects. Across both: never hide functionality; accessibility and D-pad/keyboard reach come first.
+
 ## Color
 
-Dark is the foundation. The ink ramp (`--nf-ink-1000` … `--nf-ink-400`) is a **cool desaturated** near-black, never pure `#000`, giving the picture room to breathe.
+Dark is the foundation, and the main theme is **dark-only** — it never switches to light on OS `prefers-color-scheme`. A light variant is kept *possible* as a future opt-in (`:root[data-theme="light"]`) but is not part of the main theme. The ink ramp (`--nf-ink-1000` … `--nf-ink-400`) is a **cool desaturated** near-black, never pure `#000`, giving the picture room to breathe.
 
 | Role | Token | Use |
 |---|---|---|
@@ -59,11 +68,11 @@ Glass surfaces use `--nf-surface-overlay` + `backdrop-filter: blur(var(--nf-blur
 - Durations: `fast` (140ms) for state, `normal` (220ms) for transitions, `slow` (360ms) for entrances.
 - Easings: `standard` for most, `emphasized` for focus/hover pop, `exit` for dismissals.
 - **Only `transform`/`opacity` animate.** Never `transition: all`, never layout properties.
-- All motion collapses under `prefers-reduced-motion` (handled in `base.css`).
+- All motion collapses under `prefers-reduced-motion` (handled in `accessibility.css`).
 
 ## Focus system (TV & keyboard, first-class)
 
-- Keyboard: `:focus-visible` paints `--nf-focus-ring-*` (in `base.css`).
+- Keyboard: `:focus-visible` paints `--nf-focus-ring-*` (in `accessibility.css`).
 - TV: `:root.layout-tv` thickens the ring; cards scale via `--nf-focus-scale-tv`.
 - Hooks: Jellyfin's `.card.show-focus` / `.card:focus` (verified) drive card focus; NoyaFin360 restyles the transform and ring, never the detection.
 - Focus must never be clipped — component modules keep the focused element's stacking context and overflow clear.

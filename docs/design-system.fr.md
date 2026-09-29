@@ -17,9 +17,18 @@ Une interface **cinématique, centrée sur l'affiche** : un canevas quasi-noir f
 5. **Un seul système, tous les écrans.** Les mêmes tokens s'adaptent du mobile à la TV via des échelles fluides et les classes de layout.
 6. **Indépendant de la langue et du moteur.** Aucun sélecteur basé sur le texte ; dégradation gracieuse sur moteurs faibles.
 
+## Deux dialectes, un seul système
+
+NoyaFin360 parle deux dialectes liés qui partagent **un** jeu de tokens (couleurs, radii, typographie, boutons, inputs, focus, espacements, surfaces, feedback) :
+
+- **Média** — immersif, cinématique, centré affiche : backdrops, verre discret, voiles en dégradé, mouvement piloté par le focus.
+- **Admin / réglages** — sobre, structuré, niveau SaaS premium : surfaces opaques, tables/formulaires denses, mouvement minimal, **aucun** flou/backdrop cinéma.
+
+Mêmes tokens, intensité et registre de mise en page différents. L'admin n'hérite jamais des effets média. Dans les deux cas : ne jamais masquer de fonctionnalité ; accessibilité et accès D-pad/clavier d'abord.
+
 ## Couleur
 
-Le sombre est la fondation. La rampe d'encre (`--nf-ink-1000` … `--nf-ink-400`) est un quasi-noir **froid et désaturé**, jamais `#000` pur, pour laisser respirer l'image.
+Le sombre est la fondation, et le thème principal est **dark-only** — il ne bascule jamais en clair selon `prefers-color-scheme` de l'OS. Une variante claire reste *possible* en opt-in futur (`:root[data-theme="light"]`) mais ne fait pas partie du thème principal. La rampe d'encre (`--nf-ink-1000` … `--nf-ink-400`) est un quasi-noir **froid et désaturé**, jamais `#000` pur, pour laisser respirer l'image.
 
 | Rôle | Token | Usage |
 |---|---|---|
@@ -59,11 +68,11 @@ Les surfaces de verre utilisent `--nf-surface-overlay` + `backdrop-filter: blur(
 - Durées : `fast` (140ms) pour les états, `normal` (220ms) pour les transitions, `slow` (360ms) pour les entrées.
 - Easings : `standard` par défaut, `emphasized` pour le pop de focus/hover, `exit` pour les fermetures.
 - **Seuls `transform`/`opacity` s'animent.** Jamais `transition: all`, jamais de propriétés de layout.
-- Tout mouvement s'effondre sous `prefers-reduced-motion` (géré dans `base.css`).
+- Tout mouvement s'effondre sous `prefers-reduced-motion` (géré dans `accessibility.css`).
 
 ## Système de focus (TV & clavier, prioritaire)
 
-- Clavier : `:focus-visible` peint `--nf-focus-ring-*` (dans `base.css`).
+- Clavier : `:focus-visible` peint `--nf-focus-ring-*` (dans `accessibility.css`).
 - TV : `:root.layout-tv` épaissit l'anneau ; les cartes s'agrandissent via `--nf-focus-scale-tv`.
 - Hooks : `.card.show-focus` / `.card:focus` de Jellyfin (vérifiés) pilotent le focus des cartes ; NoyaFin360 restyle la transformation et l'anneau, jamais la détection.
 - Le focus ne doit jamais être rogné — les modules gardent le contexte d'empilement et l'overflow dégagés.
