@@ -1,0 +1,12 @@
+{
+  "name": "noyafin360",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A premium cinematic interface for Jellyfin.",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
