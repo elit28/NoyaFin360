@@ -1,0 +1,35 @@
+:root {
+  /* Colors */
+  --nf-bg: #08090b;
+  --nf-surface: #111318;
+  --nf-surface-elevated: #171a20;
+  --nf-text: #f7f8fa;
+  --nf-text-muted: rgba(247, 248, 250, 0.68);
+  --nf-accent: #8ea8ff;
+
+  /* Radius */
+  --nf-radius-sm: 0.5rem;
+  --nf-radius-md: 0.875rem;
+  --nf-radius-lg: 1.25rem;
+
+  /* Spacing */
+  --nf-space-1: 0.25rem;
+  --nf-space-2: 0.5rem;
+  --nf-space-3: 0.75rem;
+  --nf-space-4: 1rem;
+  --nf-space-6: 1.5rem;
+  --nf-space-8: 2rem;
+
+  /* Motion */
+  --nf-duration-fast: 140ms;
+  --nf-duration-normal: 220ms;
+  --nf-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Effects */
+  --nf-shadow-card: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.28);
+  --nf-blur: 18px;
+
+  /* Layout */
+  --nf-content-max: 120rem;
+  --nf-page-gutter: clamp(1rem, 3vw, 4rem);
+}
