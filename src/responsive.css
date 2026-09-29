@@ -1,0 +1,7 @@
+/* Responsive rules should be added component-first, not as random patches. */
+
+@media (max-width: 48rem) {
+  :root {
+    --nf-page-gutter: 1rem;
+  }
+}
